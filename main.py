@@ -10,8 +10,11 @@ os.makedirs("responses", exist_ok=True)
 secret_key = os.urandom(24)  
 app.secret_key = secret_key  
 
+
+api_key = os.getenv("API_KEY")
+
 # Model setup
-genai.configure(api_key="Enter API KEY")
+genai.configure(api_key)
 model = genai.GenerativeModel("models/gemini-1.5-flash", generation_config={
     "temperature": 0.7,
     "top_p": 0.9,
