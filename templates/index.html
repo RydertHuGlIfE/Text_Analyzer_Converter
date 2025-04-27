@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentience Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Sentience Analysis Tool</h1>
+        <form id="initialForm" method="post" action="/store-text">
+            <label for="text">Enter your text:</label>
+            <textarea name="text" rows="10" required></textarea>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="actionSection" style="display: none;">
+            <h2>Choose Action:</h2>
+            <form method="post" action="/analyze">
+                <button type="submit">Analyze</button>
+            </form>
+       
+            <button id="showConvert">Convert</button>
+            <form id="convertForm" method="post" action="/convert" style="display: none; margin-top: 10px;">
+                <label for="conversionType">Type of Conversion:</label>
+                <input type="text" name="conversion_type" placeholder="e.g., Ask our Intelligent AI for Text Manipulation!!!" required>
+                <button type="submit">Convert & Download PDF</button>
+            </form>
+        </div>
+        <script>
+            const initialForm = document.getElementById('initialForm');
+            initialForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+               
+                const formData = new FormData(initialForm);
+                fetch("/store-text", {
+                    method: "POST",
+                    body: formData
+                }).then(response => {
+                    if (response.ok) {
+                        initialForm.style.display = "none";
+                        document.getElementById('actionSection').style.display = "block";
+                    }
+                });
+            });
+            document.getElementById('showConvert').addEventListener('click', function () {
+                const convertForm = document.getElementById('convertForm');
+                convertForm.style.display = convertForm.style.display === 'none' ? 'block' : 'none';
+            });
+        </script>
+    </div>
+</body>
+</html>
